@@ -31,18 +31,24 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     grid.appendChild(col);
   });
-
-  const testimonials = [
-    { quote: 'Great platform!', author: 'Jane Doe' },
-    { quote: 'Easy to use.', author: 'John Smith' }
+const testimonials = [
+    { quote: 'This platform made it so easy to find a workspace that fits my needs. Highly recommend!', author: 'Jane Doe, Freelancer' },
+    { quote: 'Listing my property was straightforward, and I’ve already had several bookings.', author: 'John Smith, Property Owner' }
   ];
-  const testimonialSection = document.querySelector('.testimonial-grid');
-  testimonials.forEach(testimonial => {
-    const col = document.createElement('div');
-    col.className = 'col-md-6';
-    col.innerHTML = `
-      <blockquote>${testimonial.quote} — ${testimonial.author}</blockquote>
-    `;
-    testimonialSection.appendChild(col);
-  });
+  const testimonialSection = document.querySelector('.testimonials');
+  if (testimonialSection) {
+    testimonials.forEach(testimonial => {
+      const div = document.createElement('div');
+      div.className = 'mb-3';
+      div.innerHTML = `
+        <blockquote class="blockquote">
+          <p class="mb-0">"${testimonial.quote}"</p>
+          <footer class="blockquote-footer">${testimonial.author}</footer>
+        </blockquote>
+      `;
+      testimonialSection.appendChild(div);
+    });
+  } else {
+    console.error('Testimonials section not found in the DOM');
+  }
 });
