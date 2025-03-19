@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.jumbotron {
+    background-color: #f8f9fa;
+}
+
+.btn-primary {
+    margin-right: 10px;
+}
+
+.testimonials .blockquote {
+    font-style: italic;
+}
+
+
+#signupForm {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+
+#workspaceForm {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+
+
+#loginSection, #searchSection {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+#searchResults .card {
+    margin-bottom: 10px;
+}
