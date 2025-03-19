@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search & Login - Workspace App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-light p-3">
+        <h1 class="text-center" href="/">Workspace App</h1>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="/">Home</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/signup">Signup</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="/search_login">Login</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="/property_listing">List a Property</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="/workspace_listing">List a Workspace</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="/search_login">Find a Workspace</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Login Section -->
+    <div id="loginSection" class="container my-5">
+        <h2 class="text-center">Login</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+            <p id="loginError" class="text-danger mt-2" style="display: none;">Invalid email or password.</p>
+        </form>
+    </div>
+
+    <!-- Search Section -->
+    <div id="searchSection" class="container my-5" style="display: none;">
+        <h2 class="text-center">Search for Workspaces</h2>
+        <form id="searchForm">
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" class="form-control" id="address">
+            </div>
+            <div class="form-group">
+                <label for="neighborhood">Neighborhood</label>
+                <input type="text" class="form-control" id="neighborhood">
+            </div>
+            <div class="form-group">
+                <label for="seatingCapacity">Seating Capacity (minimum)</label>
+                <input type="number" class="form-control" id="seatingCapacity">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+            <button id="logoutBtn" class="btn btn-secondary ml-2">Logout</button>
+        </form>
+        <div id="searchResults" class="mt-4">
+            <!-- Results will be displayed here -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light p-3 text-center">
+        <p>© 2023 Workspace App. All rights reserved.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="js/search_login.js"></script>
+</body>
+</html>

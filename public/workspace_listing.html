@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workspace Listing - Workspace App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-light p-3">
+        <h1 class="text-center" href="/">Workspace App</h1>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="/">Home</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/signup">Signup</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="/search_login">Login</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="/property_listing">List a Property</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="/workspace_listing">List a Workspace</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="/search_login">Find a Workspace</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Workspace Listing Form -->
+    <section class="container my-5">
+        <h2 class="text-center">List Your Workspace</h2>
+        <form id="workspaceForm">
+            <div class="form-group">
+                <label for="propertyId">Property ID</label>
+                <input type="number" class="form-control" id="propertyId" required>
+              </div>
+            <div class="form-group">
+                <label for="seatingCapacity">Seating Capacity</label>
+                <input type="number" class="form-control" id="seatingCapacity" required>
+            </div>
+            <div class="form-group">
+                <label for="availabilityDate">Availability Date</label>
+                <input type="date" class="form-control" id="availabilityDate" required>
+            </div>
+            <div class="form-group">
+                <label for="leaseTerm">Lease Term</label>
+                <select class="form-control" id="leaseTerm" required>
+                    <option value="">Select</option>
+                    <option value="day">Day</option>
+                    <option value="week">Week</option>
+                    <option value="month">Month</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" class="form-control" id="price" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Workspace</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-light p-3 text-center">
+        <p>© 2025 Workspace App. All rights reserved.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="js/workspace_listing.js"></script>
+</body>
+</html>
