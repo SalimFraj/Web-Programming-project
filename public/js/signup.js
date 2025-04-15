@@ -1,4 +1,4 @@
-document.getElementById('signupForm').addEventListener('submit', function(event) {
+document.getElementById('signupForm').addEventListener('submit', async function(event) {
     event.preventDefault(); // Prevent page reload
 
     // Get form values
@@ -25,16 +25,31 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
         phone,
         email,
         role,
-        password // Note: In Phase 2, this will be hashed
+        password // Password will be hashed on the server
     };
 
-    // Store in localStorage
-    let users = JSON.parse(localStorage.getItem('users')) || [];
-    users.push(user);
-    // Note: In Phase 2, replace plain text password storage with proper hashing
-    localStorage.setItem('users', JSON.stringify(users));
+    try {
+        // Send POST request to the API
+        const response = await fetch('http://localhost:3000/api/users', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        });
 
-    // Feedback to user
-    alert('Signup successful! You can now log in.');
-    // Optional redirect: window.location.href = '/login';
+        if (response.ok) {
+            // Success: Show message and redirect to login
+            alert('Signup successful! You can now log in.');
+            window.location.href = 'search_login.html';
+        } else {
+            // Error: Display the error message from the server
+            const errorData = await response.json();
+            alert(`Error: ${errorData.message}`);
+        }
+    } catch (error) {
+        // Network or other unexpected errors
+        alert('An unexpected error occurred. Please try again later.');
+        console.error('Signup error:', error);
+    }
 });

@@ -1,34 +1,48 @@
 // Check login state on page load
-document.addEventListener('DOMContentLoaded', function() {
-    if (isLoggedIn()) {
-        document.getElementById('loginSection').style.display = 'none';
-        document.getElementById('searchSection').style.display = 'block';
+document.addEventListener('DOMContentLoaded', async function() {
+    if (await isLoggedIn()) {
+        const user = await getLoggedInUser();
+        if (user.role === 'owner') {
+            window.location.href = 'owner_dashboard.html';
+        } else {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('searchSection').style.display = 'block';
+        }
     } else {
         document.getElementById('loginSection').style.display = 'block';
         document.getElementById('searchSection').style.display = 'none';
     }
 });
 
-localStorage.setItem('users', JSON.stringify([{ email: 'coworker@example.com', password: 'pass123', role: 'coworker' }]));
-localStorage.setItem('properties', JSON.stringify([{ id: 1, address: '123 Main St', neighborhood: 'Downtown' }]));
-localStorage.setItem('workspaces', JSON.stringify([{ id: 2, propertyId: 1, seatingCapacity: 10, price: 500, leaseTerm: 'month' }]));
-
-
-
 // Handle login form submission
-document.getElementById('loginForm').addEventListener('submit', function(event) {
+document.getElementById('loginForm').addEventListener('submit', async function(event) {
     event.preventDefault();
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    const user = users.find(u => u.email === email && u.password === password && u.role === 'coworker');
-    if (user) {
-        localStorage.setItem('loggedInUser', email);
-        document.getElementById('loginSection').style.display = 'none';
-        document.getElementById('searchSection').style.display = 'block';
-        document.getElementById('loginError').style.display = 'none';
-    } else {
-        document.getElementById('loginError').style.display = 'block';
+
+    try {
+        const response = await fetch('http://localhost:3000/api/users/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+          });
+          const data = await response.json();
+
+          if (response.ok) {
+            localStorage.setItem('loggedInUser', data.user.email);
+            if (data.user.role === 'owner') { // Adjusted to data.user.role
+                window.location.href = 'owner_dashboard.html';
+            } else {
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('searchSection').style.display = 'block';
+                document.getElementById('loginError').style.display = 'none';
+            }
+        } else {
+            document.getElementById('loginError').style.display = 'block';
+        }
+    } catch (error) {
+        console.error('Login error:', error);
+        alert('An unexpected error occurred. Please try again later.');
     }
 });
 
@@ -40,48 +54,94 @@ document.getElementById('logoutBtn').addEventListener('click', function() {
 });
 
 // Handle search form submission
-document.getElementById('searchForm').addEventListener('submit', function(event) {
+document.getElementById('searchForm').addEventListener('submit', async function(event) {
     event.preventDefault();
     const address = document.getElementById('address').value.toLowerCase();
     const neighborhood = document.getElementById('neighborhood').value.toLowerCase();
-    const seatingCapacity = document.getElementById('seatingCapacity').value;
+    const sqft = document.getElementById('sqft').value;
+    const garage = document.getElementById('garage').value;
+    const publicTransport = document.getElementById('publicTransport').value;
+    const seats = document.getElementById('seats').value;
+    const smoking = document.getElementById('smoking').value;
+    const availability = document.getElementById('availability').value;
+    const term = document.getElementById('term').value;
+    const price = document.getElementById('price').value;
 
-    const properties = JSON.parse(localStorage.getItem('properties')) || [];
-    const workspaces = JSON.parse(localStorage.getItem('workspaces')) || [];
+    try {
+        // Fetch properties from the API
+        const propertiesResponse = await fetch('http://localhost:3000/api/properties');
+        const properties = await propertiesResponse.json();
 
-    // Filter properties based on address and neighborhood
-    const filteredProperties = properties.filter(prop => {
-        const propAddress = prop.address.toLowerCase();
-        const propNeighborhood = prop.neighborhood.toLowerCase();
-        return (!address || propAddress.includes(address.toLowerCase())) &&
-               (!neighborhood || propNeighborhood.includes(neighborhood.toLowerCase()));
-      });
+        // Fetch workspaces from the API
+        const workspacesResponse = await fetch('http://localhost:3000/api/workspaces');
+        const workspaces = await workspacesResponse.json();
 
-    // Get property IDs from filtered properties
-    const propertyIds = filteredProperties.map(prop => prop.id);
+        // Filter properties based on property-related criteria
+        const filteredProperties = properties.filter(prop => {
+            const propAddress = prop.address.toLowerCase();
+            const propNeighborhood = prop.neighborhood.toLowerCase();
+            return (!address || propAddress.includes(address)) &&
+                   (!neighborhood || propNeighborhood.includes(neighborhood)) &&
+                   (!sqft || prop.sqft >= parseInt(sqft)) &&
+                   (!garage || prop.garage === garage) &&
+                   (!publicTransport || prop.publicTransport === publicTransport);
+        });
 
-    // Filter workspaces based on property IDs and seating capacity
-    const filteredWorkspaces = workspaces.filter(ws => {
-        const matchingProperty = filteredProperties.find(prop => prop.id === ws.propertyId);
-        return matchingProperty && (!seatingCapacity || parseInt(ws.seatingCapacity) >= parseInt(seatingCapacity));
-      });
+        // Get property IDs from filtered properties
+        const propertyIds = filteredProperties.map(prop => prop.id);
 
-    // Display the results
-    displaySearchResults(filteredWorkspaces, filteredProperties);
+        // Filter workspaces based on property IDs and workspace-specific criteria
+        const filteredWorkspaces = workspaces.filter(ws => {
+            const matchesProperty = propertyIds.includes(ws.propertyId);
+            const matchesSeats = !seats || ws.seats >= parseInt(seats);
+            const matchesSmoking = !smoking || ws.smoking === smoking;
+            const matchesAvailability = !availability || new Date(ws.availability) >= new Date(availability);
+            const matchesTerm = !term || ws.leaseTerm === term;
+            const matchesPrice = !price || ws.price <= parseFloat(price);
+            return matchesProperty && matchesSeats && matchesSmoking && matchesAvailability && matchesTerm && matchesPrice;
+        });
+
+        // Display the results
+        displaySearchResults(filteredWorkspaces, filteredProperties);
+    } catch (error) {
+        console.error('Search error:', error);
+        alert('An error occurred while searching. Please try again later.');
+    }
 });
 
-// Check if a coworker is logged in
-function isLoggedIn() {
+// Check if a user is logged in
+async function isLoggedIn() {
     const loggedInUserEmail = localStorage.getItem('loggedInUser');
     if (loggedInUserEmail) {
-        const users = JSON.parse(localStorage.getItem('users')) || [];
-        const user = users.find(u => u.email === loggedInUserEmail && u.role === 'coworker');
-        return !!user;
+        try {
+            const response = await fetch(`/api/users?email=${loggedInUserEmail}`);
+            const user = await response.json();
+            return !!user;
+        } catch (error) {
+            console.error('Error checking login status:', error);
+            return false;
+        }
     }
     return false;
 }
 
-// Display search results
+// Get the logged-in user’s details
+async function getLoggedInUser() {
+    const loggedInUserEmail = localStorage.getItem('loggedInUser');
+    if (loggedInUserEmail) {
+        try {
+            const response = await fetch(`/api/users?email=${loggedInUserEmail}`);
+            const user = await response.json();
+            return user;
+        } catch (error) {
+            console.error('Error fetching user details:', error);
+            return null;
+        }
+    }
+    return null;
+}
+
+// Display search results with clickable titles and all relevant details
 function displaySearchResults(workspaces, properties) {
     const resultsDiv = document.getElementById('searchResults');
     resultsDiv.innerHTML = '';
@@ -97,10 +157,17 @@ function displaySearchResults(workspaces, properties) {
             const card = `
                 <div class="card mb-3">
                     <div class="card-body">
-                        <h5 class="card-title">${property.address}</h5>
+                        <h5 class="card-title"><a href="workspace_details.html?id=${ws._id}">${ws.type}</a></h5>
+                        <p class="card-text">Address: ${property.address}</p>
                         <p class="card-text">Neighborhood: ${property.neighborhood}</p>
-                        <p class="card-text">Seating Capacity: ${ws.seatingCapacity}</p>
-                        <p class="card-text">Price: $${ws.price} per ${ws.leaseTerm}</p>
+                        <p class="card-text">Square Footage: ${property.sqft} sqft</p>
+                        <p class="card-text">Garage: ${property.garage}</p>
+                        <p class="card-text">Public Transport: ${property.publicTransport}</p>
+                        <p class="card-text">Seats: ${ws.seats}</p>
+                        <p class="card-text">Smoking: ${ws.smoking}</p>
+                        <p class="card-text">Availability: ${ws.availability}</p>
+                        <p class="card-text">Lease Term: ${ws.term}</p>
+                        <p class="card-text">Price: $${ws.price}</p>
                     </div>
                 </div>
             `;
