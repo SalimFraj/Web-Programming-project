@@ -25,7 +25,7 @@ document.getElementById('signupForm').addEventListener('submit', async function(
         phone,
         email,
         role,
-        password // Password will be hashed on the server
+        password 
     };
 
     try {
