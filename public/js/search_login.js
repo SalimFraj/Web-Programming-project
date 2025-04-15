@@ -30,7 +30,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
 
           if (response.ok) {
             localStorage.setItem('loggedInUser', data.user.email);
-            if (data.user.role === 'owner') { // Adjusted to data.user.role
+            if (data.user.role === 'owner') { 
                 window.location.href = 'owner_dashboard.html';
             } else {
                 document.getElementById('loginSection').style.display = 'none';
