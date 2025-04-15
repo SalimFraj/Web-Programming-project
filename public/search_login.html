@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-        <!-- Header -->
+    <!-- Header -->
     <header class="bg-light p-3">
-        <h1 class="text-center" href="index.html">Workspace App</h1>
+        <h1 class="text-center">Workspace App</h1>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container">
                 <a class="navbar-brand" href="index.html">Home</a>
@@ -21,19 +21,13 @@
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
                             <a class="nav-link" href="signup.html">Signup</a>
-                          </li>
-                          <li class="nav-item">
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="search_login.html">Login</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href="property_listing.html">List a Property</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href="workspace_listing.html">List a Workspace</a>
-                          </li>
-                          <li class="nav-item">
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="search_login.html">Find a Workspace</a>
-                          </li>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -70,8 +64,53 @@
                 <input type="text" class="form-control" id="neighborhood">
             </div>
             <div class="form-group">
-                <label for="seatingCapacity">Seating Capacity (minimum)</label>
-                <input type="number" class="form-control" id="seatingCapacity">
+                <label for="sqft">Square Footage (minimum)</label>
+                <input type="number" class="form-control" id="sqft" min="0">
+            </div>
+            <div class="form-group">
+                <label for="garage">Garage Availability</label>
+                <select class="form-control" id="garage">
+                    <option value="">Any</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="publicTransport">Accessible by Public Transport</label>
+                <select class="form-control" id="publicTransport">
+                    <option value="">Any</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="seats">Seats (minimum)</label>
+                <input type="number" class="form-control" id="seats" min="0">
+            </div>
+            <div class="form-group">
+                <label for="smoking">Smoking Policy</label>
+                <select class="form-control" id="smoking">
+                    <option value="">Any</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="availability">Availability (from)</label>
+                <input type="date" class="form-control" id="availability">
+            </div>
+            <div class="form-group">
+                <label for="term">Lease Term</label>
+                <select class="form-control" id="term">
+                    <option value="">Any</option>
+                    <option value="day">Day</option>
+                    <option value="week">Week</option>
+                    <option value="month">Month</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="price">Price (maximum)</label>
+                <input type="number" class="form-control" id="price" min="0" step="0.01">
             </div>
             <button type="submit" class="btn btn-primary">Search</button>
             <button id="logoutBtn" class="btn btn-secondary ml-2">Logout</button>
