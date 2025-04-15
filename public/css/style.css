@@ -37,3 +37,64 @@ body {
 #searchResults .card {
     margin-bottom: 10px;
 }
+.custom-modal .modal-content {
+    background-color: #f8f9fa; /* Light gray background */
+    border-radius: 10px;       /* Rounded corners */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Subtle shadow for depth */
+}
+
+.custom-modal .modal-header {
+    background-color: #007bff; /* Blue header */
+    color: white;             /* White text for contrast */
+}
+
+.custom-modal .form-group {
+    margin-bottom: 20px;      /* Increased spacing between form fields */
+}
+
+.custom-modal .form-control {
+    border-radius: 5px;       /* Rounded input fields */
+}
+
+.workspace-card {
+    transition: transform 0.2s; /* Smooth scaling on hover */
+}
+
+.workspace-card:hover {
+    transform: scale(1.02);    /* Slight zoom effect on hover */
+}
+
+.workspace-card .card-header {
+    background-color: #e9ecef; /* Light gray header */
+    font-weight: bold;         /* Bold text for emphasis */
+}
+
+.fa {
+    margin-right: 5px;         /* Spacing between icons and text */
+}
+
+
+
+
+
+.owner-contact {
+    background-color: #f8f9fa; /* Light gray background */
+    border: 1px solid #dee2e6; /* Subtle border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 15px; /* Inner spacing */
+    margin-top: 20px; /* Space above */
+  }
+  
+  .contact-item {
+    display: flex; /* Align icon and text horizontally */
+    align-items: center; /* Center vertically */
+    margin-bottom: 10px; /* Space between items */
+    font-size: 16px; /* Readable text size */
+    color: #333; /* Dark text color */
+  }
+  
+  .contact-item i {
+    margin-right: 10px; /* Space between icon and text */
+    color: #007bff; /* Blue icon color */
+    font-size: 18px; /* Slightly larger icon */
+  }
